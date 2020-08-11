@@ -19,22 +19,39 @@ tempList.sort(reverse=False) # sort biggest first
 
 tempList = ([j-i for i, j in zip(flexNumberList[:-1], flexNumberList[1:])]) # count the diff between next and prev item
 
-
-
 for b, c in zip (flexNumberList, tempList): # print every item in both list, zip to iterate both lists in same print
     print (b,c)
 
-counterFlexNumberList = []
-#testValue = flexNumberList[12] - flexNumberList[11]
-#print(testValue, flexNumberList[11],  flexNumberList[12])
+tempInt = 0
+for i in tempList: 
+    if(i >= 2) : 
+        fixedFlexNumbers = []
+        index = tempList.index(i) #get index from templist
+        fixedFlexNumbers.append((flexNumberList[index] if index < len(flexNumberList) else default)) #add the value of the input index
+        tempInt = ((flexNumberList[index] if index < len(flexNumberList) else default))
+        countFlexDiff = []
+        testTemp = 0
+        while True:
+            countFlexDiff.append(1)
+            total = sum(countFlexDiff)
+            if total == i:
+                break
+        print(*countFlexDiff, sep = "\n")
+        print("values to diff iterate: ", tempInt)
+        for b in countFlexDiff:
+            tempInt -= 1
+            print(tempInt)
 
-count = 0
-for b in flexNumberList:
-    if tempList[count] >= 2:
-        counterFlexNumberList = tempList[count]
-        count += 1
+            
 
-print(counterFlexNumberList)
+
+
+
+
+
+print("Checking if 4 exists in list ( using in ) : ") 
+
+
 
 # 4/5 done
 # list med de nummer som är mer än 2 + nästa nummer 
