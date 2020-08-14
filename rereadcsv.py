@@ -5,25 +5,25 @@ from pathlib import Path, PureWindowsPath
 import ast
 import shlex
 
-#filepath = input("ange sökväg till csv: ")
-#filename = Path(filepath) #input file path
-#path_on_windows = PureWindowsPath(filename) #make file path python compatible eg / instead of \
+filepath = input("ange sökväg till csv: ")
+filename = Path(filepath) #input file path
+path_on_windows = PureWindowsPath(filename) #make file path python compatible eg / instead of \
 
+with open(path_on_windows, "r+", encoding="utf-8") as csv_file:
+    content = csv_file.read()
 
+with open(path_on_windows, "w+", encoding="utf-8") as csv_file:
+    csv_file.write(content.replace('"', ''))
 
-with open("C:/Users/Loco/Desktop/Git project/rereadcsv/Data/rereaddata.csv") as infile:
+with open(path_on_windows) as infile:
     reader = csv.reader(infile, delimiter = ",") #Create a new reader
     next(reader) # Skip the first row
-    data = []
     data = list(reader)
-    #for data1 in reader:
-        #data1 = [d.replace('"', ',') for d in data1]
-       # data1 = list(data1)
-        #print("lol", data1)
 
 flexNumberList = [row[3].split(",")[0] for row in data] #splits the out every value in col 3 from data list
-serverNameList = [row[1].split(",")[0] for row in data] #splits the out every value in col 1 from data list
-    
+serverNameList = [row[2].split(",")[0] for row in data] #splits the out every value in col 1 from data list
+
+print("piss",flexNumberList,  " ", serverNameList)
 tempList = flexNumberList
 
 flexNumberList = list(map(int, flexNumberList)) # convert list from string to int
@@ -56,7 +56,7 @@ for i in tempList:
         for b in countFlexDiff:
             tempInt -= 1
             testString +=  str(tempInt) + "|"
-            #print("egrep \|(",tempInt,"|flexnumber)\| SYSTEMNAMN_DATUM.log",tempInt)
+            print("egrep \|(",tempInt,"|flexnumber)\| SYSTEMNAMN_DATUM.log",tempInt)
             
         print('egrep "\|('+testString+')\|"'+ serverNameList[0])
 
