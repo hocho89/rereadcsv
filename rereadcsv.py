@@ -1,11 +1,10 @@
 import csv
 import operator
-import re
 from pathlib import Path, PureWindowsPath
-import ast
-import shlex
+from datetime import datetime
 
 filepath = input("ange sökväg till csv: ")
+print("\n")
 filename = Path(filepath) #input file path
 path_on_windows = PureWindowsPath(filename) #make file path python compatible eg / instead of \
 
@@ -20,47 +19,50 @@ with open(path_on_windows) as infile:
     next(reader) # Skip the first row
     data = list(reader)
 
-flexNumberList = [row[3].split(",")[0] for row in data] #splits the out every value in col 3 from data list
-serverNameList = [row[2].split(",")[0] for row in data] #splits the out every value in col 1 from data list
+fNumberList = [row[3].split(",")[0] for row in data] #splits the out every value in col 3 from data list
+serverNameList = [row[2].split(",")[0] for row in data] #splits the out every value in col 2 from data list
+dateList = [row[0].split(",")[0] for row in data] #splits the out every value in col 0 from data list
+systemName = [row[1].split(",")[0] for row in data] #splits the out every value in col 1 from data list 
 
-print("piss",flexNumberList,  " ", serverNameList)
-tempList = flexNumberList
+dateListTemp = []
+for b in dateList: #replace space and / to - for date row
+    j = b.replace(' ', '-')
+    j = b.replace("/","-")
+    dateListTemp.append(j)
 
-flexNumberList = list(map(int, flexNumberList)) # convert list from string to int
-flexNumberList.sort(reverse=False) # sort biggest first in list
+dateStringTemp = str(dateListTemp[0]) #converted one date row to string
+
+tempList = fNumberList
+
+fNumberList = list(map(int, fNumberList)) # convert list from string to int
+fNumberList.sort(reverse=False) # sort biggest first in list
 
 tempList = list(map(int, tempList)) # convert list from string to int
 tempList.sort(reverse=False) # sort biggest first in list
 
-tempList = ([j-i for i, j in zip(flexNumberList[:-1], flexNumberList[1:])]) # count the diff between next and prev item
-
-#for b, c in zip (flexNumberList, tempList): # print every item in both list, zip to iterate both lists in same print
-   #print (b,c)
+tempList = ([j-i for i, j in zip(fNumberList[:-1], fNumberList[1:])]) # count the diff between next and prev item
 
 tempInt = 0
 
 for i in tempList: 
     if(i >= 2) : 
-        fixedFlexNumbers = []
+        fixedFNumbers = []
         index = tempList.index(i) #get index from templist
-        fixedFlexNumbers.append((flexNumberList[index] if index < len(flexNumberList) else default)) #add the value of the input index
-        tempInt = ((flexNumberList[index] if index < len(flexNumberList) else default))
-        countFlexDiff = []
+        fixedFNumbers.append((fNumberList[index] if index < len(fNumberList) else default)) #add the value of the input index
+        tempInt = ((fNumberList[index] if index < len(fNumberList) else default)) #if next nu,mber in fNUmberList is higher add to templist
+        countFDiff = []
         testString = ""
         while True:
-            countFlexDiff.append(1)
-            total = sum(countFlexDiff)
-            if total == i:
+            countFDiff.append(1) #add 1 depedning on tempInt size
+            total = sum(countFDiff) #sum of every 1 in confFDiff
+            if total == i: #if sum is more than i break loop
                 break
-        #print(*countFlexDiff, sep = "\n")
-        for b in countFlexDiff:
+        for b in countFDiff: #fill up teststring with fnumbers
             tempInt -= 1
             testString +=  str(tempInt) + "|"
-            print("egrep \|(",tempInt,"|flexnumber)\| SYSTEMNAMN_DATUM.log",tempInt)
             
-        print('egrep "\|('+testString+')\|"'+ serverNameList[0])
-
+        dateTime = str(datetime.date(datetime.now())) #current date of sytem
+        print("Antal missade rader: " + str(i))
+        print("Kontrollera innehåll: "+'egrep "\|('+testString+')\|"'+ serverNameList[0]+"-"+dateStringTemp[0:10]+".log"+" "+"|"+" "+"grep -iv heartbeat")
+        print("Skapa fil: "+'egrep "\|('+testString+')\|"'+ serverNameList[0]+"-"+dateStringTemp[0:10]+".log"+" "+"|"+" "+"grep -iv heartbeat >" + " " + systemName[0] +"_"+ dateTime + ".log \n" )
             
-
-print("Checking if 4 exists in list ( using in ) : ") 
-
