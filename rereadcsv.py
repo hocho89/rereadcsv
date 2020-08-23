@@ -56,7 +56,7 @@ def get_index_value(i):
         fixedFNumbers = ((fNumberList[index] if index < len(fNumberList) else default)) #add the value of the input index        
         return fixedFNumbers
 
-for i in fNumberList: 
+for i in fNumberList: #logic for filtering out difference 
     counter2 = 1
     total = get_index_value(i)
     if (tempList[counter]>= 2):
@@ -74,9 +74,10 @@ resultList = resultList[max(tempList):]
 testString = str(resultList).replace(',','|').replace('[','').replace(']','').replace(' ','')
 
 dateTime = str(datetime.date(datetime.now())) #current date of sytem
-print("Antal missade rader: " + str(i))
+#print("Antal missade rader: " + str(counter))
 print("Kontrollera innehåll: "+'egrep "\|('+testString+')\|"'+ serverNameList[0]+"-"+dateStringTemp[0:10]+".log"+" "+"|"+" "+"grep -iv heartbeat")
 print("Skapa fil: "+'egrep "\|('+testString+')\|"'+ serverNameList[0]+"-"+dateStringTemp[0:10]+".log"+" "+"|"+" "+"grep -iv heartbeat >" + " " + systemName[0] +"_"+ dateTime + ".log \n" )
+
 
 
 
