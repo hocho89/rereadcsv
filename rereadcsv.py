@@ -16,13 +16,13 @@ testString = ""
 total = ""
 counter = -1
 
-with open("path_on_windows", "r+", encoding="utf-8") as csv_file:
+with open(path_on_windows, "r+", encoding="utf-8") as csv_file:
     content = csv_file.read()
 
-with open("path_on_windows", "w+", encoding="utf-8") as csv_file:
+with open(path_on_windows, "w+", encoding="utf-8") as csv_file:
     csv_file.write(content.replace('"', ''))
 
-with open("path_on_windows") as infile:
+with open(path_on_windows) as infile:
     reader = csv.reader(infile, delimiter = ",") #Create a new reader
     next(reader) # Skip the first row
     data = list(reader)
