@@ -1,5 +1,6 @@
 import csv
 import operator
+import os
 from pathlib import Path, PureWindowsPath
 from datetime import datetime
 #"C:/Users/Loco/Desktop/VS project/Data/test.csv"
@@ -7,6 +8,13 @@ from datetime import datetime
 #print("\n")
 #filename = Path(filepath) #input file path
 #path_on_windows = PureWindowsPath(filename) #make file path python compatible eg / instead of \
+
+resultList = []
+counter = 0
+fixedFNumbers = []
+testString = ""
+total = ""
+counter = -1
 
 with open("C:/Users/Loco/Desktop/VS project/Data/test.csv", "r+", encoding="utf-8") as csv_file:
     content = csv_file.read()
@@ -36,51 +44,41 @@ tempList = fNumberList
 
 fNumberList = list(map(int, fNumberList)) # convert list from string to int
 fNumberList.sort(reverse=False) # sort biggest first in list
+fNumberList.pop(1)
 
 tempList = list(map(int, tempList)) # convert list from string to int
 tempList.sort(reverse=False) # sort biggest first in list
 
 tempList = ([j-i for i, j in zip(fNumberList[:-1], fNumberList[1:])]) # count the diff between next and prev item
 
+def get_index_value(i):
+        index = fNumberList.index(i) #get index from templist
+        fixedFNumbers = ((fNumberList[index] if index < len(fNumberList) else default)) #add the value of the input index        
+        return fixedFNumbers
 
-testIndex = 0
-usedIndexList = []
-counter = 0
-for i in tempList: 
-    countFDiff = []
-    fixedFNumbers = []
-    testString = ""
-    total = 0
-    tempInt = 0
-    counter += 1
-    #if(i >= 2):
-     #   counter += 1
-      #  print("kuk",str(i), str(tempList.index(i)))
-    print(str(counter))
-    #if(i >= 2 and tempList.index(i) != testIndex): 
-    if(i >= 2): 
-        countFDiff.clear()
-        index = tempList.index(i) #get index from templist
-        #fixedFNumbers.append((fNumberList[index] if index < len(fNumberList) else default)) #add the value of the input index
-        tempInt = ((fNumberList[index] if index < len(fNumberList) else default)) #if next nu,mber in fNUmberList is higher add to templist
-        #counter += 1
-        testIndex = index
-        print("used indexx: ",*fixedFNumbers, str(tempInt), str(index), str(counter))
+for i in fNumberList: 
+    counter2 = 1
+    total = get_index_value(i)
+    if (tempList[counter]>= 2):
+        total = i
         while True:
-            countFDiff.append(1) #add 1 depedning on tempInt size
-            total = sum(countFDiff) #sum of every 1 in confFDiff
-            total = total +1
-            if total == i: #if sum is more than i break loop
-                break
-        for b in countFDiff: #fill up teststring with fnumbers
-            tempInt += 1
-            testString += str(tempInt) + "|"
+            total = total - 1
+            resultList.append(total)
+            counter2 = counter2 + 1
+            if(counter2 >= tempList[counter]):
+                counter2 = 0
+                break       
+    counter += 1
 
-         
-        dateTime = str(datetime.date(datetime.now())) #current date of sytem
-        print("Antal missade rader: " + str(i))
-        print("Kontrollera innehåll: "+'egrep "\|('+testString+')\|"'+ serverNameList[0]+"-"+dateStringTemp[0:10]+".log"+" "+"|"+" "+"grep -iv heartbeat")
-        print("Skapa fil: "+'egrep "\|('+testString+')\|"'+ serverNameList[0]+"-"+dateStringTemp[0:10]+".log"+" "+"|"+" "+"grep -iv heartbeat >" + " " + systemName[0] +"_"+ dateTime + ".log \n" )
+resultList = resultList[max(tempList):]
+testString = str(resultList).replace(',','|').replace('[','').replace(']','').replace(' ','')
+
+dateTime = str(datetime.date(datetime.now())) #current date of sytem
+print("Antal missade rader: " + str(i))
+print("Kontrollera innehåll: "+'egrep "\|('+testString+')\|"'+ serverNameList[0]+"-"+dateStringTemp[0:10]+".log"+" "+"|"+" "+"grep -iv heartbeat")
+print("Skapa fil: "+'egrep "\|('+testString+')\|"'+ serverNameList[0]+"-"+dateStringTemp[0:10]+".log"+" "+"|"+" "+"grep -iv heartbeat >" + " " + systemName[0] +"_"+ dateTime + ".log \n" )
+
+
 
         
         
