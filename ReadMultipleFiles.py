@@ -3,10 +3,24 @@ import operator
 import os
 from pathlib import Path, PureWindowsPath
 from datetime import datetime
+from os import listdir
+from os.path import isfile, join
+
+
+
+
+def read_directory():
+    filepath_list = []   
+    filepath = input("ange sökväg till mapp: ")
+    filename = Path(filepath) #input file path
+    path_on_windows = PureWindowsPath(filename)
+    onlyfiles = [f for f in listdir(path_on_windows) if isfile(join(path_on_windows, f))]
+    filepath_list = ([str(filepath) + s for s in onlyfiles])
+    print(filepath_list[1:4])
+        
 
 def get_filepath():
     filepath = input("ange sökväg till csv: ")
-    print("\n")
     filename = Path(filepath) #input file path
     path_on_windows = PureWindowsPath(filename) #make file path python compatible eg / instead of \
     #init_csvfile(path_on_windows)
@@ -47,8 +61,8 @@ def format_datelist(date_list):
         j = b.replace("/","-")
         date_list_temp.append(j)
     date_string = str(date_list_temp[0]) #converted one date row to string
-    #print(dateStringTemp)
     return date_string
+
 
 def sort_list(csv_list):
     fNumberList = list(map(int, fNumberList)) # convert list from string to int
@@ -59,4 +73,4 @@ def sort_list(csv_list):
 #init sequence
 #init_csvfile(get_filepath()) #data 
 #print(split_values_from_csv(init_csvfile(get_filepath()), 'flist'))
-
+read_directory()
